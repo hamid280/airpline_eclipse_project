@@ -43,9 +43,9 @@ public class AddFlight extends HttpServlet {
 		
 		Flight f = new Flight();
 		
-		f.setFlightOrigin(FlightDestinations.Paris);
+		f.setFlightOrigin(FlightDestinations.Los_Angeles);
 		
-		f.setFlightDestination(FlightDestinations.Rome);
+		f.setFlightDestination(FlightDestinations.London);
 		
 		f.setPrice(400);
 		

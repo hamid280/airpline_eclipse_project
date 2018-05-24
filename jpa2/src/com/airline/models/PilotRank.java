@@ -1,8 +1,7 @@
 package com.airline.models;
 
 public enum PilotRank {
-	Captian,
-	First_Officer,
-	Junior_Officer
-
+	Captain, //0
+	First_Officer, //1
+	Junior_Officer //2
 }

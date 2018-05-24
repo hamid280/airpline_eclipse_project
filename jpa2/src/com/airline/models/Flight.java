@@ -10,6 +10,7 @@ import javax.persistence.*;
  * Entity implementation class for Entity: Flight
  *
  */
+@NamedQuery(name = "Flight.findById", query="SELECT f FROM Flight f WHERE f.id = :id")
 @Entity
 public class Flight implements Serializable {
 
@@ -34,30 +35,12 @@ public class Flight implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date flightTime;
 
-	// set one to one relationship with airplane
 	@OneToOne
 	@JoinColumn(name = "airplane_fk")
 	private Airplane airplaneDetail;
 
-	// set one to many relationship with pilot
 	@OneToMany(mappedBy = "flightForPilot")
 	private List<Pilot> pilots;
-
-	public Airplane getAirplaneDetail() {
-		return airplaneDetail;
-	}
-
-	public void setAirplaneDetail(Airplane airplaneDetail) {
-		this.airplaneDetail = airplaneDetail;
-	}
-
-	public List<Pilot> getPilots() {
-		return pilots;
-	}
-
-	public void setPilots(List<Pilot> pilots) {
-		this.pilots = pilots;
-	}
 
 	public Integer getId() {
 		return id;
@@ -99,11 +82,28 @@ public class Flight implements Serializable {
 		this.flightTime = flightTime;
 	}
 
+	public Airplane getAirplaneDetail() {
+		return airplaneDetail;
+	}
+
+	public void setAirplaneDetail(Airplane airplaneDetail) {
+		this.airplaneDetail = airplaneDetail;
+	}
+
+	public List<Pilot> getPilots() {
+		return pilots;
+	}
+
+	public void setPilots(List<Pilot> pilots) {
+		this.pilots = pilots;
+	}
+
 	@Override
 	public String toString() {
-		return "Flight [id=" + id + ", flightOrigin=" + flightOrigin + ", flightDestination=" + flightDestination
-				+ ", price=" + price + ", flightTime=" + flightTime + ", airplaneDetail=" + airplaneDetail + ", pilots="
-				+ pilots + "]";
+		return "Flight [id=" + id + ", flightOrigin=" + flightOrigin
+				+ ", flightDestination=" + flightDestination + ", price="
+				+ price + ", flightTime=" + flightTime + ", airplaneDetail="
+				+ airplaneDetail + ", pilots=" + pilots + "]";
 	}
 
 }

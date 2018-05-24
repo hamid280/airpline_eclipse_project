@@ -9,24 +9,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.airline.models.Pilot;
-import com.airline.models.PilotRank;
-import com.airline.service.PilotService;
+import com.airline.service.FlightService;
 
 /**
- * Servlet implementation class AddPilot
+ * Servlet implementation class AddPilotToFlight
  */
-@WebServlet("/AddPilot")
-public class AddPilot extends HttpServlet {
+@WebServlet("/AddPilotToFlight")
+public class AddPilotToFlight extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
-	@EJB
-	PilotService ps;
 	
+	@EJB
+	FlightService fs;
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AddPilot() {
+    public AddPilotToFlight() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,15 +33,11 @@ public class AddPilot extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
-		Pilot p = new Pilot();
 		
-		p.setFirstName("Griselda");
-		p.setLastName("Cavendish");
-		p.setPilotRank(PilotRank.Captain);
-		p.setPilotLicense(178245);
+		String pid = request.getParameter("pid");
+		String fid = request.getParameter("fid");
 		
-		ps.addPilot(p);
+		fs.addPilotToFlight(pid, fid);
 		
 	}
 

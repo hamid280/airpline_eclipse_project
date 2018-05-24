@@ -25,18 +25,9 @@ public class Airplane implements Serializable {
 	private String modelName;
 
 	private Integer seatingCapacity;
-
-	// one to one relationship with flight
+	
 	@OneToOne(mappedBy = "airplaneDetail")
 	private Flight flight;
-
-	public Flight getFlight() {
-		return flight;
-	}
-
-	public void setFlight(Flight flight) {
-		this.flight = flight;
-	}
 
 	public Integer getId() {
 		return id;
@@ -72,7 +63,8 @@ public class Airplane implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Airplane [id=" + id + ", planeMake=" + planeMake + ", modelName=" + modelName + ", seatingCapacity="
+		return "Airplane [id=" + id + ", planeMake=" + planeMake
+				+ ", modelName=" + modelName + ", seatingCapacity="
 				+ seatingCapacity + "]";
 	}
 

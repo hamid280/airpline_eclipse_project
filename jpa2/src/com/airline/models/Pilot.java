@@ -7,6 +7,7 @@ import javax.persistence.*;
  * Entity implementation class for Entity: Pilot
  *
  */
+@NamedQuery(name="Pilot.findById", query="SELECT p FROM Pilot P WHERE p.id = :id")
 @Entity
 public class Pilot implements Serializable {
 

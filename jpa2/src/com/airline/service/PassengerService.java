@@ -22,10 +22,12 @@ public class PassengerService {
 	}
 
 	@PersistenceContext(unitName = "airline")
-	private EntityManager entityManager;
+	private EntityManager em;
 
 	public void addPassenger(Passenger p) {
-		entityManager.persist(p);
+
+		em.persist(p);
+		
 	}
 
 }
