@@ -32,21 +32,19 @@ public class FlightService {
 	public void addFlight(Flight f, Airplane a) {
 
 		em.persist(f);
-		em.persist(a);
+		//em.persist(a);  -- because its cascaded the do not need to persist airplane individually.its persisted automatically
 
 	}
 
 	public void addPilotToFlight(String pilotId, String flightId) {
 
-		TypedQuery<Flight> fQuery = em.createNamedQuery("Flight.findById",
-				Flight.class);
+		TypedQuery<Flight> fQuery = em.createNamedQuery("Flight.findById", Flight.class);
 
 		fQuery.setParameter("id", Integer.parseInt(flightId));
 
 		Flight f = fQuery.getSingleResult();
 
-		TypedQuery<Pilot> pQuery = em.createNamedQuery("Pilot.findById",
-				Pilot.class);
+		TypedQuery<Pilot> pQuery = em.createNamedQuery("Pilot.findById", Pilot.class);
 
 		pQuery.setParameter("id", Integer.parseInt(pilotId));
 
@@ -57,9 +55,16 @@ public class FlightService {
 		pList.add(p);
 
 		f.setPilots(pList);
-		
+
 		p.setFlightForPilot(f);
+
+	}
+
+	public List<Flight> getFlights() {
 		
+		TypedQuery<Flight> query = em.createQuery("SELECT f FROM Flight f", Flight.class);
+		List<Flight> results = query.getResultList();
+		return results;
 
 	}
 
