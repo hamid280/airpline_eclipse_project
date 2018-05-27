@@ -12,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -22,7 +24,7 @@ import javax.persistence.TemporalType;
  * Entity implementation class for Entity: Flight
  *
  */
-@NamedQuery(name = "Flight.findById", query="SELECT f FROM Flight f WHERE f.id = :id")
+@NamedQuery(name = "Flight.findById", query = "SELECT f FROM Flight f WHERE f.id = :id")
 @Entity
 public class Flight implements Serializable {
 
@@ -47,12 +49,16 @@ public class Flight implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date flightTime;
 
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
 	@JoinColumn(name = "airplane_fk")
 	private Airplane airplaneDetail;
 
 	@OneToMany(mappedBy = "flightForPilot")
 	private List<Pilot> pilots;
+
+	@ManyToMany
+	@JoinTable(name = "f_p_join", joinColumns = @JoinColumn(name = "flight_fk"), inverseJoinColumns = @JoinColumn(name = "passenger_fk"))
+	private List<Passenger> passengers;
 
 	public Integer getId() {
 		return id;
@@ -109,13 +115,20 @@ public class Flight implements Serializable {
 	public void setPilots(List<Pilot> pilots) {
 		this.pilots = pilots;
 	}
+	
+	public List<Passenger> getPassengers() {
+		return passengers;
+	}
+
+	public void setPassengers(List<Passenger> passengers) {
+		this.passengers = passengers;
+	}
 
 	@Override
 	public String toString() {
-		return "Flight [id=" + id + ", flightOrigin=" + flightOrigin
-				+ ", flightDestination=" + flightDestination + ", price="
-				+ price + ", flightTime=" + flightTime + ", airplaneDetail="
-				+ airplaneDetail + ", pilots=" + pilots + "]";
+		return "Flight [id=" + id + ", flightOrigin=" + flightOrigin + ", flightDestination=" + flightDestination
+				+ ", price=" + price + ", flightTime=" + flightTime + ", airplaneDetail=" + airplaneDetail + ", pilots="
+				+ pilots + "]";
 	}
 
 }

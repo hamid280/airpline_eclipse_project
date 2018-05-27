@@ -5,7 +5,7 @@
 <head>
 
 <link rel="stylesheet" href="resources/css/jpaStyles.css" />
-<title>Flights List</title>
+<title>Passengers List</title>
 
 </head>
 
@@ -18,11 +18,13 @@
 	
 		<tr>
 		
-			<th>ID</th>
-			<th>FirstName</th>
-			<th>LastName</th>
-			<th>Date Of Birth</th>
+			<th>Id</th>
+			<th>First name</th>
+			<th>Last name</th>
+			<th>Date of birth</th>
 			<th>Gender</th>
+			
+		
 		
 		</tr>
 		
@@ -37,18 +39,35 @@
 		 
 		 	<tr>
 		 	
-		 		<td><%= pList.get(i).getId() %></td>
-		 		<td><%= pList.get(i).getFirstName() %></td>
-		 		<td><%= pList.get(i).getLastName() %></td>
-		 		<td><%= pList.get(i).getDob() %></td>
-		 		<td><%= pList.get(i).getGender() %></td>
-		 	
+		 		<td><%= pList.get(i).getId()  %></td>
+		 		<td><%= pList.get(i).getFirstName()  %></td>
+		 		<td><%= pList.get(i).getLastName()  %></td>
+		 		<td><%= pList.get(i).getDob()  %></td>
+		 		<td><%= pList.get(i).getGender()  %></td>
+		 		
 		 	</tr>
 		 	
 		 	<tr>
-		 		<td colspan = "5"> No flight tickets yet. </td>
-		 	</tr>
-		 
+		 		<td colspan="5">
+		 			<%
+		 				if(pList.get(i).getFlights().size() > 0) {
+		 					
+		 					List<Flight> fList = (List<Flight>) pList.get(i).getFlights();
+		 					
+		 					for(Integer k = 0; k < fList.size(); k++) {
+		 					
+		 			 %>
+		 			 		<%= k+1 %>) <%= fList.get(k).getFlightOrigin() %> to <%= fList.get(k).getFlightDestination() %> @ <%= fList.get(k).getFlightTime() %> <br /> 
+		 			 <%
+		 			 		} //for
+		 			 	} else {
+		 			  %>
+		 			  		No flight tickets yet.
+		 			  <%
+		 			  	}
+		 			   %>
+		 		</td>
+			</tr>		 
 		 <%
 		 	}
 		  %>

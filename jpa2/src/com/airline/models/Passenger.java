@@ -34,6 +34,9 @@ public class Passenger implements Serializable {
 
 	@Enumerated(EnumType.STRING)
 	private FlightClass flightClass;
+	
+	@ManyToMany(mappedBy="passengers")   // passengers is the name of the list of the passengers from the flight class.
+	private List<Flight> flights;  //the flight tickets the passenger has
 
 	public Integer getId() {
 		return id;
@@ -81,6 +84,14 @@ public class Passenger implements Serializable {
 
 	public void setFlightClass(FlightClass flightClass) {
 		this.flightClass = flightClass;
+	}
+	
+	public List<Flight> getFlights() {
+		return flights;
+	}
+
+	public void setFlights(List<Flight> flights) {
+		this.flights = flights;
 	}
 
 	@Override

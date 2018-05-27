@@ -7,9 +7,13 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import com.airline.models.Airplane;
 import com.airline.models.Flight;
+import com.airline.models.Passenger;
 import com.airline.models.Pilot;
 
 /**
@@ -58,6 +62,49 @@ public class FlightService {
 
 		p.setFlightForPilot(f);
 
+	}
+	
+	public void addPassengerToFlight(String passengerId, String flightId) {
+		
+		//Get the passenger by id (new way)
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		
+		CriteriaQuery<Passenger> cqPassenger = builder.createQuery(Passenger.class);
+		
+		Root<Passenger> pRoot = cqPassenger.from(Passenger.class);
+		
+		cqPassenger.select(pRoot).where(builder.equal(pRoot.get("id").as(Integer.class), passengerId));
+		
+		TypedQuery<Passenger> pQuery = em.createQuery(cqPassenger);
+		
+		Passenger passenger = pQuery.getSingleResult();
+		
+		//Get the flight by id
+		builder = em.getCriteriaBuilder();
+		
+		CriteriaQuery<Flight> cqFlight = builder.createQuery(Flight.class);
+		
+		Root<Flight> fRoot = cqFlight.from(Flight.class);
+		
+		cqFlight.select(fRoot).where(builder.equal(fRoot.get("id").as(Integer.class), flightId));
+		
+		TypedQuery<Flight> fQuery = em.createQuery(cqFlight);
+		
+		Flight flight = fQuery.getSingleResult();
+		
+		//Associate passenger with the flight
+		
+		
+		//first we add passenger to the flight (many to many relationship)
+		List<Passenger> pList = flight.getPassengers();
+		
+		pList.add(passenger);
+		
+		flight.setPassengers(pList);
+		
+		//now we add this flight to the list of the flights the passenger has (many to many relationship)
+		passenger.getFlights().add(flight);
+		
 	}
 
 	public List<Flight> getFlights() {

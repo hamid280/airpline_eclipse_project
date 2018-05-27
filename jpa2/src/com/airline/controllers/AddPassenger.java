@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.airline.models.FlightClass;
 import com.airline.models.Gender;
 import com.airline.models.Passenger;
 import com.airline.service.PassengerService;
@@ -22,53 +21,60 @@ import com.airline.service.PassengerService;
 @WebServlet("/AddPassenger")
 public class AddPassenger extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+
 	@EJB
 	PassengerService ps;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AddPassenger() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		Passenger p = new Passenger();
-		
-		p.setFirstName("Daniel");
-		p.setLastName("Chermetz");
-		
-		Calendar cal = Calendar.getInstance();
-		
-		cal.set(Calendar.YEAR, 1986);
-		cal.set(Calendar.MONTH, 9);
-		cal.set(Calendar.DAY_OF_MONTH, 10);
-		
-		Date dob = cal.getTime();
-		
-		p.setDob(dob);
-		
-		p.setGender(Gender.Male);
-		
-		p.setFlightClass(FlightClass.Coach);
-		
-		System.out.println(p);
-		
-		ps.addPassenger(p);
-		
+	public AddPassenger() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		Passenger p = new Passenger();
+
+		String firstName = request.getParameter("first_name");
+		p.setFirstName(firstName);
+
+		String lastName = request.getParameter("last_name");
+		p.setLastName(lastName);
+
+		String dobRaw = request.getParameter("dob"); // 23/10/1998
+		String[] dobArray = dobRaw.split("\\/");
+		Calendar cal = Calendar.getInstance();
+
+		cal.set(Calendar.YEAR, Integer.parseInt(dobArray[2]));
+		cal.set(Calendar.MONTH, Integer.parseInt(dobArray[1]) - 1);
+		cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dobArray[0]));
+
+		Date dob = cal.getTime();
+		p.setDob(dob);
+
+		String gender = request.getParameter("gender");
+		p.setGender(Gender.valueOf(gender));
+
+		System.out.println(p);
+
+		ps.addPassenger(p);
+		
+		response.sendRedirect("Passengers");
 	}
 
 }
